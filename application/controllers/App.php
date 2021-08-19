@@ -6,6 +6,8 @@ class App extends CI_Controller{
     {
         parent::__construct();
          date_default_timezone_set("Asia/kolkata");
+		
+		 $this->load->helper('url'); 
         $this->load->model("App_model");
         $this->load->helper("form");
         
@@ -244,7 +246,7 @@ class App extends CI_Controller{
 		    $active=$this->input->post('is_active');
 		    $data['is_active']=isset($active)?1:0;
 		    
-		    $fileupload=$_FILES["brand_image"]["name"];;
+		    $fileupload=$_FILES["brand_image"]["name"];
 		    
 		    if(empty($fileupload) == false){
 		        $config['upload_path'] = 'brand_images';
@@ -321,7 +323,8 @@ public function add_product(){
 		$active=$this->input->post('is_active');
         $data['is_active']=isset($active)?1:0;
 		
-		 $pimage=$this->input->post('product_image');
+		$pimage=$_FILES["product_image"]["name"];
+		 
 		    if(!empty($pimage) === true){
 		        $config['upload_path'] = 'product_images';
                 $config['allowed_types'] = 'jpg|png|jpeg|JPG|JPEG|svg';
@@ -352,7 +355,7 @@ public function add_product(){
 		    }
 		    
 		    
-		   $pvideo=$this->input->post('product_video');
+		   $pvideo=$_FILES["product_video"]["name"];
 		    if(!empty($pvideo) === true){
 		        $config['upload_path'] = 'product_images';
                 $config['allowed_types'] = 'mp4|mpeg|mov|vob|flv';
@@ -404,7 +407,7 @@ public function delete_pro($pid)
 	if($sql)
 	{
 		$this->session->set_flashdata('smsg','Record Deleted Successfully');
-			redirect(base_url('index.php/Admin/product_master'));
+			redirect(base_url('index.php/product_master'));
 	}
 }
 
@@ -414,7 +417,7 @@ public function edit_pro($pid)
 	
 		  if($_POST)
 	{
-		$data['pid'] = $this->input->post('pid');
+		$data['pid'] = $pid;
 		$data['cat_id'] = $this->input->post('cat_id');
 		$data['brand_id'] = $this->input->post('brand_id');
 		$data['product_name'] = $this->input->post('product_name');
@@ -426,30 +429,90 @@ public function edit_pro($pid)
 		$data['IGST'] = $this->input->post('IGST');
 		$data['HSN_CODE'] = $this->input->post('HSN_CODE');
 		
-		$this->load->model('App_model');
+		$pimage=$_FILES["product_image"]["name"];
+		 
+		    if(!empty($pimage) === true){
+		        $config['upload_path'] = 'product_images';
+                $config['allowed_types'] = 'jpg|png|jpeg|JPG|JPEG|svg';
+                $config['max_size'] = '100000';
+                $config['remove_spaces'] = TRUE;
+                $fname=$_FILES["product_image"]["name"];
+                $ext = strtolower(pathinfo($fname,PATHINFO_EXTENSION));
+        
+                $config['file_name']='img_'.uniqid().".".$ext;
+
+                $this->load->library('upload', $config);
+                $this->upload->initialize($config); 
+                
+                if ( ! $this->upload->do_upload('product_image'))
+                {
+                    $x['error'] = array('error' => $this->upload->display_errors());
+                    print_r($config['upload_path']);
+                    print_r($x['error']);exit;
+            
+                }
+                else{
+                    $data['product_img']=$config['upload_path']."/".$config['file_name'];
+                }
+   
+		    }
+		    else{
+		        $data['product_img']=$this->input->post('old_image');
+		    }
+
+
+
+			$pvideo=$_FILES["product_video"]["name"];
+		    if(!empty($pvideo) === true){
+		        $config['upload_path'] = 'product_images';
+                $config['allowed_types'] = 'mp4|mpeg|mov|vob|flv';
+                $config['max_size'] = '100000';
+                $config['remove_spaces'] = TRUE;
+                $fname=$_FILES["product_video"]["name"];
+                $ext = strtolower(pathinfo($fname,PATHINFO_EXTENSION));
+        
+                $config['file_name']='img_'.uniqid().".".$ext;
+
+                $this->load->library('upload', $config);
+                $this->upload->initialize($config); 
+                
+                if ( ! $this->upload->do_upload('product_video'))
+                {
+                    $x['error'] = array('error' => $this->upload->display_errors());
+                    print_r($config['upload_path']);
+                    print_r($x['error']);exit;
+            
+                }
+                else{
+                    $data['product_video']=$config['upload_path']."/".$config['file_name'];
+                }
+        
+        
+                
+		    }
+		    else{
+		        $data['product_video']=$this->input->post('old_video');
+		    }
+
+
+
+
 		$upd = $this->App_model->update_pro($data);
 		if($upd=='success')
 		{
 			$this->session->set_flashdata('smsg','Product data updated');
-			redirect(base_url('index.php/Admin/product_master'));
+			redirect(base_url('index.php/product_master'));
 		}
 		else{
 			$this->session->set_flashdata('wmsg','Something Went wrong');
 			redirect(base_url('index.php/edit_pro/'.$data['pid']));
 		}
 	}
-		$this->load->model('App_model');
-		$data['cat_id']=$this->App_model->get_pro($pid);
-		$data['brand_id']=$this->App_model->get_pro($pid);
-		$data['product_name']=$this->App_model->get_pro($pid);
-		$data['description']=$this->App_model->get_pro($pid);
-		$data['product_img']=$this->App_model->get_pro($pid);
-		$data['product_video']=$this->App_model->get_pro($pid);
-		$data['CGST']=$this->App_model->get_pro($pid);
-		$data['SGST']=$this->App_model->get_pro($pid);
-		$data['IGST']=$this->App_model->get_pro($pid);
-		$data['HSN_CODE']=$this->App_model->get_pro($pid);
-		   $this->load->view('Admin/add_pro',$data);
+		
+		$data1['pinfo']=$this->App_model->get_pro($pid);
+		$data1['category_list']=$this->App_model->category();
+		$data1['brandinfo']=$this->App_model->brand();
+		   $this->load->view('Admin/add_pro',$data1);
 	
 }
 
@@ -824,6 +887,12 @@ public function check_mobileno(){
     }
 } 
 
+function get_brands(){
+	$cat_id=$this->input->post('cat_id');
+	$sql="select * from brand where cat_id=$cat_id and is_active=1";
+	$brands=$this->db->query($sql)->result();
+	echo json_encode($brands);
+}
 function get_districts(){
     $state_id=$this->input->post('state_id');
     $districts=$this->db->get_where("district_master",array("state_id"=>$state_id))->result();;
@@ -862,7 +931,7 @@ function edit_user($id){
 	
 	    if($_POST)
 	    {
-		    $data['radius_master'] = $radius_master;
+		    $data['radius_master'] = "";
 		   
 		   
 		    $upd = $this->App_model->update_radius($data);
@@ -1167,4 +1236,3 @@ public function alert_messages(){
 /* ------------------------------------------------------------------------------------------------------------------------- */
 /* ------------------------------------------------------------------------------------------------------------------------- */
 }
-?>

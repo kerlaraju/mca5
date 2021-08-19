@@ -65,9 +65,9 @@
         <!-- /.card-header -->
         <div class="card-body">
             <?PHP
-                if(!empty($this->session->flashdata('smsg'))){
-                    $smsg=$this->session->flashdata('smsg');
-                        echo "<div class='alert alert-success'>".$smsg."</div>";
+                if($this->session->flashdata('smsg')!=""){
+                    
+                        echo "<div class='alert alert-success'>".$this->session->flashdata('smsg')."</div>";
 
                 }
 

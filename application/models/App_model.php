@@ -1,6 +1,6 @@
 <?php
 class App_model extends CI_model {
-  
+   
 /* ----------------------------------Dashboard info ------------------------------------------------------------------*/
 public function getdashboardinfo(){
     $users=$this->db->get_where('user_profile',array("is_active"=>"1"));
@@ -181,6 +181,7 @@ public function update_pro($data)
 public function get_pro($pid){
 
     $array = array('pid'=>$pid);
+    
     $data = $this->db->get_where('product_master',$array)->row();
     
     return $data;

@@ -108,7 +108,12 @@
                                     <label for="exampleInputEmail1">Select Brand</label>
                                     <select class="form-control" name="brand_id" id="brand_id" required>
                                         <?PHP if(isset($pinfo)){ 
-                                            echo "<option value='".$pinfo->brand_id."' selected>".$pinfo->brand_name."</option>";
+                                              foreach($brandinfo as $b ){
+                                                  if($pinfo->brand_id==$b->brand_id){
+                                                    echo "<option value='".$b->brand_id."' selected>".$b->brand_name."</option>";
+                                                  }
+                                              }
+                                            
                                         }
                                         else{
                                             echo "<option value=''>Select Brand</option>";
@@ -226,80 +231,6 @@
 </div>
 <!-- /.content-wrapper -->
 
-<div class="modal fade" id="modal-lg">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title">Product List</h4>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <form id="form" action="" method="post">
-                <div class="modal-body">
-                    <input type="hidden" id="flag" value="" />
-                    <div id="pid_block" style="display:none" class="form-group">
-                        <label>Product Id</label>
-                        <input type="text" id="pid" class="form-control" placeholder="Product ID" disabled>
-                    </div>
-                    <div class="form-group">
-                        <label>Category Id</label>
-                        <input type="text" id="cat_id" class="form-control" placeholder="Enter Category Id">
-                    </div>
-                    <div class="form-group">
-                        <label>Brand Id</label>
-                        <input type="text" id="brand_id" class="form-control" placeholder="Enter Brand Id">
-                    </div>
-                    <div class="form-group">
-                        <label>product Name</label>
-                        <input type="text" id="product_name" class="form-control" placeholder="Enter Product Name">
-                    </div>
-                    <div class="form-group">
-                        <label>Product Description</label>
-                        <input type="text" id="description" class="form-control" placeholder="Enter Product Description">
-                    </div>
-
-                    <div class="form-group">
-                        <label>Product Image</label>
-                        <input type="file" id="product_img" class="form-control" placeholder="Enter Product Image">
-                    </div>
-                    <div class="form-group">
-                        <label>Product Video</label>
-                        <input type="file" id="product_video" class="form-control" placeholder="Enter Product Video">
-                    </div>
-                    <div class="form-group">
-                        <label>CGST</label>
-                        <input type="text" id="CGST" class="form-control" placeholder="Enter CGST ">
-                    </div>
-                    <div class="form-group">
-                        <label>SGST </label>
-                        <input type="text" id="SGST" class="form-control" placeholder="Enter  SGST">
-                    </div>
-                    <div class="form-group">
-                        <label>IGST </label>
-                        <input type="text" id="IGST" class="form-control" placeholder="Enter  IGST">
-                    </div>
-                    <div class="form-group">
-                        <label>HSN CODE</label>
-                        <input type="text" id="HSN_CODE" class="form-control" placeholder="Enter HSN CODE ">
-                    </div>
-
-
-
-
-
-                </div>
-                <div class="modal-footer justify-content-between">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <button type="reset" class="btn btn-danger reset" id="reset">Reset</button>
-                    <button type="button" id="submit" class="btn btn-primary">Save changes</button>
-                </div>
-            </form>
-        </div>
-        <!-- /.modal-content -->
-    </div>
-    <!-- /.modal-dialog -->
-</div>
 
 <?PHP $this->load->view("Admin/footer"); ?>
 
