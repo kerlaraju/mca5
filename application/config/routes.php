@@ -98,6 +98,7 @@ $route['add_vendor']="App/add_vendor";
 $route['check_mobileno']="App/check_mobileno";
 $route['get_districts']="App/get_districts";
 $route['edit_info/(:any)']="App/edit_user/$1";
+
 /* ------------------------------------------------------------------------------- */
 $route['banners']="App/banner_master";
 $route['add_banner']='App/add_banner';
