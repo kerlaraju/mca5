@@ -53,7 +53,11 @@ $route['default_controller'] = 'Login';
 $route['dashboard']='App';
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
-
+/* ------------------------------------------------------------------------------- */
+$route['alert_messages']='App/alert_messages';
+$route['add_alert']="App/add_alert";
+$route['delete_alert/(:any)']="App/delete_alert/$1";
+$route['edit_alert/(:any)']="App/edit_alert/$1";
 /* ------------------------------------------------------------------------------- */
 $route['category']='App/category';
 $route['add_cat']="App/add_cat";

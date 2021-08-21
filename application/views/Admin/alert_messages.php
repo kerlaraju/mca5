@@ -41,7 +41,7 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1 class="m-0">Category List
+                    <h1 class="m-0">Alert Message
                         <a href="<?= base_url('index.php/add_alert')?>">
                         <Button class="btn btn-primary">
                              <i class="fa fa-plus"> New </i>
