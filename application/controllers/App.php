@@ -1102,4 +1102,12 @@ function edit_user($id){
 		$banners=$this->db->get_where('banner_master',array('screen'=>$screen))->result();
 		echo json_encode($banners);
 	}
+
+
+
+	public function mandals_list(){
+		$sql = "select M.*,D.district,S.state from mandal_master M left join district_master D on M.district_id=D.district_id left join state_master S on D.state_id=S.state_id;";
+		$data['mandals']=$this->db->query($sql)->result();
+		$this->load->view('Admin/mandals_list.php',$data);
+	}
 }

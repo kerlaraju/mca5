@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>District</title>
+    <title>Buidlup Store- Mandals List</title>
 
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -41,89 +41,85 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1 class="m-0">
-                        <a href="<?= base_url('index.php/district_master') ?>">
-                            <Button class="btn btn-primary">
-                                <i class="fa fa-arrow-left"> Back </i>
-                            </Button>
+                    <h1 class="m-0">Mandal List
+                        <a href="<?= base_url('index.php/add_dis')?>">
+                        <Button class="btn btn-primary">
+                             <i class="fa fa-plus"> New </i>
+                        </Button>
                         </a>
+                        
                     </h1>
                 </div><!-- /.col -->
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="#">Home</a></li>
-                        <li class="breadcrumb-item active">Add District</li>
+                        <li class="breadcrumb-item active">District</li>
                     </ol>
                 </div><!-- /.col -->
             </div><!-- /.row -->
         </div><!-- /.container-fluid -->
     </div>
     <!-- /.content-header -->
-
     <div class="card">
 
         <!-- /.card-header -->
         <div class="card-body">
-            <div class="card card-primary">
-                <div class="card-header">
-                    <h3 class="card-title">Add District</h3>
+            <?PHP
+                if(!empty($this->session->flashdata('smsg'))){
+                    $smsg=$this->session->flashdata('smsg');
+                        echo "<div class='alert alert-success'>".$smsg."</div>";
 
-                </div>
-                <!-- /.card-header -->
-                <!-- form start -->
-                <form action="#" method="post">
-                    <div class="card-body">   
-                        <?PHP
-                        if (!empty($this->session->flashdata('smsg'))) {
-                           
-                            $msg=$this->session->flashdata('smsg');
-                           
-                           
-                                echo "<div class='alert alert-success'>".$msg."</div>";
-                           
-                        }
-                        ?>
-                            
-                        <div class="row">
-                            <div class="col-6">
-                            <div class="form-group">
-                                    <label for="exampleInputEmail1">Select State</label>
-                                    <select name="state_id" class="form-control" required>
-                                        <option value="">Select State</option>
-                                        <?PHP 
-                                            foreach($states as $state){
-                                                if(isset($district_info)){
-                                                    if($district_info->state_id==$state->state_id){
-                                                        echo "<option value='".$state->state_id."' selected>".$state->state."</option>";
-                                                    }
-                                                }
-                                                echo "<option value='".$state->state_id."'>".$state->state."</option>";
-                                            }
-                                        ?>
-                                    </select> 
+                }
+
+            ?>
+            <table id="example1" class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th>SNO</th>
+                        <th>Action</th>
+                        <th>State </th>
+                        <th>District </th>
+                        <th>Mandal</th>
+                    </tr>
+                </thead>
+                <tbody>
+             <?PHP
+                $n=1;
+                foreach($mandals as $x){?>
+                    <tr>
+                        <td><?PHP echo $n; ?></td>
+                        <td>
+
+
+                            <div>
+                                
                                    
-                                </div>
+                                
+                                    <a href="<?= base_url('index.php/edit_dis/'.$x->mandal_id); ?>"><i class="fa fa-edit"> </i></a>
+                                
+                                    <a href="<?= base_url('index.php/delete_dis/'.$x->mandal_id); ?>"><i class="fa fa-trash"> </i></a>
+                                
+
                             </div>
-                            <div class="col-6">
-                                 <div class="form-group">
-                                    <label for="exampleInputEmail1">Enter district name</label>
-                                   
-                                    <input type="text" value="<?PHP if(!empty($district_info)){ echo $district_info->district;} ?>" class="form-control" id="exampleInputEmail1" placeholder="Enter district " name="district" required>
-                                </div>
-                            </div>
-                           
-                        </div>
 
-                        </div>
+                        </td>
+                        
+                      
+                     
+                        <td> <?PHP echo $x->state; ?> </td>
+                        <td> <?PHP echo $x->district; ?> </td>
+                        <td><?PHP echo $x->mandal; ?></td>
+                        
+                    </tr>
+                    <?PHP 
+                    $n++;
+                }
+                ?>
+                
 
-                    </div>
-                    <!-- /.card-body -->
+                </tbody>
 
-                    <div class="card-footer">
-                        <input type="submit" class="btn btn-primary" value="submit">
-                    </div>
-                </form>
-            </div>
+            </table>
 
         </div>
 
@@ -134,7 +130,47 @@
 </div>
 <!-- /.content-wrapper -->
 
+<div class="modal fade" id="modal-lg">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">District List</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form id="form" action="" method="post">
+                <div class="modal-body">
+                    <input type="hidden" id="flag" value="" />
+                    <div id="district_id_block" style="display:none" class="form-group">
+                        <label>District Id</label>
+                        <input type="text" id="district_id" class="form-control" placeholder="District ID" disabled>
+                    </div>
+                    <div class="form-group">
+                        <label>State Id</label>
+                        <input type="text" id="state_id" class="form-control" placeholder="Enter State id">
+                    </div>
+                    <div class="form-group">
+                        <label>District </label>
+                        <input type="text" id="district" class="form-control" placeholder="Enter District ">
+                    </div>
 
+
+
+
+
+                </div>
+                <div class="modal-footer justify-content-between">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="reset" class="btn btn-danger reset" id="reset">Reset</button>
+                    <button type="button" id="submit" class="btn btn-primary">Save changes</button>
+                </div>
+            </form>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
 
 <?PHP $this->load->view("Admin/footer"); ?>
 
