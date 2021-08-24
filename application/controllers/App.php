@@ -532,7 +532,7 @@ public function edit_pro($pid)
             
             $ins=$this->App_model->add_state($data);
             $this->session->set_flashdata('smsg',$ins['message']);
-            redirect(base_url('index.php/add_state'));
+            redirect(base_url('index.php/state_master'));
         }
 
 
@@ -602,7 +602,7 @@ public function add_dis(){
 		//    print_r($this->session->flashdata('code'));
 		//    print_r($this->session->flashdata('msg'));
 		//    exit;
-			redirect(base_url('index.php/add_dis'));
+			redirect(base_url('index.php/district_master'));
 		}
 			 
 	}
@@ -965,7 +965,7 @@ function edit_user($id){
 	{
 		$data['screen']=$this->input->post('screen');
 		$data['banner_name']=$this->input->post('banner_name');
-			$data['navigation_url']=$this->input->post('navigation_url');
+		$data['navigation_url']=$this->input->post('navigation_url');
 		$data['banner_order']=$this->input->post('banner_order');
 	
 	
@@ -996,12 +996,15 @@ function edit_user($id){
             $data['banner_image']=$config['upload_path']."/".$config['file_name'];
             $x=$this->App_model->add_banner($data);
                        
-            
-              $this->session->set_flashdata('smsg',$x['message']);  
-                           
-           
-            
-            redirect(base_url('index.php/add_banner'));
+            if($x=='success'){
+				$this->session->set_flashdata('smsg',"New Banner Added Successfully");  
+                redirect(base_url('index.php/banners'));
+			}
+			else{
+				$this->session->set_flashdata('smsg',"Something Went wrong try again");  
+                redirect(base_url('index.php/add_banner'));
+			}
+              
         }
                 
                 
@@ -1011,8 +1014,8 @@ function edit_user($id){
 			 
 	}
 
-
-		$this->load->view('Admin/add_banner');
+	     $data1['banners']=$this->App_model->banner_master();
+		$this->load->view('Admin/add_banner',$data1);
     }
 
 
@@ -1092,147 +1095,11 @@ function edit_user($id){
 		$this->load->view('Admin/add_banner',$data);
 	
     }
-/* -------------Alert------------------------------------------------------------------------------------------------------------ */
-public function alert_messages(){
-	
-	$data=$this->App_model->alert_messages();
-	$result['alert_messages']=$data;
-	$this->load->view("Admin/alert_messages",$result);
-    }
 
-    public function add_alert()
-    {   
-	if($_POST)
-	{
-		$data['cat_name']=$this->input->post('cat_name');
-		$data['cat_description']=$this->input->post('cat_description');
-			$data['cat_name']=$this->input->post('cat_name');
-		$data['cat_description']=$this->input->post('cat_description');
-	
-		
-		$active=$this->input->post('is_active');
-	
-		$data['is_active']=isset($active)?1:0;
-        
-        $config['upload_path'] = 'category_images';
-        $config['allowed_types'] = 'jpg|png|jpeg|JPG|JPEG|svg';
-        $config['max_size'] = '100000';
-        $config['remove_spaces'] = TRUE;
-        $fname=$_FILES["cat_image"]["name"];
-        $ext = strtolower(pathinfo($fname,PATHINFO_EXTENSION));
-        
-        $config['file_name']='img_'.uniqid().".".$ext;
 
-        $this->load->library('upload', $config);
-        $this->upload->initialize($config); 
-        
-        if ( ! $this->upload->do_upload('cat_image'))
-        {
-            $x['error'] = array('error' => $this->upload->display_errors());
-            print_r($config['upload_path']);
-            print_r($x['error']);exit;
-            
-        }
-         else
-        {
-            $data['cat_image']=$config['upload_path']."/".$config['file_name'];
-            $x=$this->App_model->add_cat($data);
-                       
-            
-              $this->session->set_flashdata('smsg',$x['message']);  
-                           
-           
-            
-            redirect(base_url('index.php/add_cat'));
-        }
-                
-                
-                
-                
-		
-			 
+	public function get_banner_order(){
+		$screen=$this->input->post('screen');
+		$banners=$this->db->get_where('banner_master',array('screen'=>$screen))->result();
+		echo json_encode($banners);
 	}
-
-
-		$this->load->view('Admin/add_cat');
-    }
-
-/*
-    public function delete_cat($cat_id)
-    {
-	$sql = $this->db->query("delete from category where cat_id=$cat_id");
-	if($sql)
-	{
-		$this->session->set_flashdata('smsg','Record Deleted Successfully');
-			redirect(base_url('index.php/category'));
-	}
-    }
-
-
-    public function edit_cat($cat_id)
-    {
-	
-	    if($_POST)
-	    {
-		    $data['cat_id'] = $cat_id;
-		    $data['cat_name'] = $this->input->post('cat_name');
-		    $data['cat_description'] = $this->input->post('cat_description');
-		    $is_new=$this->input->post('is_new');
-		    $data['is_new'] = isset($is_new)?1:0;
-		    $active=$this->input->post('is_active');
-		    $data['is_active']=isset($active)?1:0;
-		    $fileupload=$_FILES["cat_image"]["name"];;
-		    echo $fileupload;exit;
-		    if(empty($fileupload) == false){
-		        $config['upload_path'] = 'category_images';
-                $config['allowed_types'] = 'jpg|png|jpeg|JPG|JPEG|svg';
-                $config['max_size'] = '100000';
-                $config['remove_spaces'] = TRUE;
-                $fname=$_FILES["cat_image"]["name"];
-                $ext = strtolower(pathinfo($fname,PATHINFO_EXTENSION));
-        
-                $config['file_name']='img_'.uniqid().".".$ext;
-
-                $this->load->library('upload', $config);
-                $this->upload->initialize($config); 
-                
-                if ( ! $this->upload->do_upload('cat_image'))
-                {
-                    $x['error'] = array('error' => $this->upload->display_errors());
-                    print_r($config['upload_path']);
-                    print_r($x['error']);exit;
-            
-                }
-                else{
-                    $data['cat_image']=$config['upload_path']."/".$config['file_name'];
-                }
-        
-        
-                
-		    }
-		    else{
-		        $data['cat_image']=$this->input->post('old_file');
-		    }
-		   
-		   
-		    $upd = $this->App_model->update_cat($data);
-		    if($upd=='success')
-		    {
-			    $this->session->set_flashdata('smsg','category data updated');
-			    redirect(base_url('index.php/category'));
-		    }
-		    else
-		    {
-			    $this->session->set_flashdata('wmsg','Something Went wrong');
-			    redirect(base_url('index.php/edit_cat/'.$data['cat_id']));
-		    }
-	   }
-		
-	    $data['category_info']=$this->App_model->get_category($cat_id);
-		$this->load->view('Admin/add_cat',$data);
-	
-    }
-    */
-/* ------------------------------------------------------------------------------------------------------------------------- */
-/* ------------------------------------------------------------------------------------------------------------------------- */
 }
