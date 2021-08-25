@@ -105,7 +105,7 @@ $route['add_banner']='App/add_banner';
 $route['get_banner_order']='App/get_banner_order';
 
 /*-----------Mandal Masters ---------------------------------*/
-$route['mandals']='App/mandals_list';
+
 
 
 
