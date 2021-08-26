@@ -488,18 +488,26 @@ public function approve($id){
         return $data;
     }
     public function add_banner($data){
+        $check_banner=$this->db->get_where('banner_master',array("banner_name"=>$data['banner_name']));
         
+        if($check_banner->num_rows()>0){
+            $data['code']='2';
+            $data['message']="banner_master ".$data['banner_name']." Already Exists";
+         
+        }
+        else{
             $insert=$this->db->insert('banner_master',$data);
             if($insert){
-                
-                return "success";
+                $data['code']='4';
+                $data['message']="banner_master ".$data['banner_name']." Added Successfully";
                 
                 
             }else{
-                return "fail";
+                $data['code']='1';
+                $data['message']='Something Went Wrong';
             }
-        
-        
+        }
+        return $data;
     }
 
     public function update_banner($data)

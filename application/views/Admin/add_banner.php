@@ -88,12 +88,7 @@
                             <div class="col-6">
                                 <div class="form-group">
                                     <label for="exampleInputEmail1">Banner Screen</label>
-                                    <select name='screen' class="form-control" id='screen' required>
-                                        <option value="">Select Screen </option>
-                                        <option value="1">Category Screen</option>
-                                        <option value="2">Brand Screen</option>
-                                    </select>
-                                    
+                                    <input type="text" value="<?PHP if(isset($banner_info)){ echo $banner_info->screen;}else{ echo ""; } ?>" class="form-control" placeholder="Enter Banner Screen" name="screen" required>
                                 </div>
                             </div>
                             <div class="col-6">
@@ -120,11 +115,7 @@
                             <div class="col-6">
                                 <div class="form-group">
                                     <label for="exampleInputEmail1">banner order</label>
-                                    <select name="banner_order" class="form-control" id='banner_order' required>
-                                        <option value="">Select Order </option>
-                                       
-                                    </select>
-                                    
+                                    <input type="text" value="<?PHP if(isset($banner_info)){ echo $banner_info->banner_order;}else{ echo ""; } ?>" class="form-control" placeholder="Enter Order" name="banner_order" required>
                                 </div>
                             </div>
                         </div>  
@@ -166,7 +157,60 @@
 </div>
 <!-- /.content-wrapper -->
 
+<div class="modal fade" id="modal-lg">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Banner List</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form id="form" action="" method="post">
+                <div class="modal-body">
+                    <input type="hidden" id="flag" value="" />
+                    <div id="banner_id_block" style="display:none" class="form-group">
+                        <label>Banner Id</label>
+                        <input type="text" id="banner_id" class="form-control" placeholder="banner ID" disabled>
+                    </div>
+                    <div class="form-group">
+                        <label>Banner Screen</label>
+                        <input type="text" id="screen" class="form-control" placeholder="Enter Screen ">
+                    </div>
 
+                    <div class="form-group">
+                        <label>Banner Name</label>
+                        <input type="text" id="banner_name" class="form-control" placeholder="Enter Banner Name">
+                    </div>
+                    <div class="form-group">
+                        <label>Banner Image</label>
+                        <input type="file" id="banner_image" class="form-control" placeholder="Enter Banner Image">
+                    </div>
+                    <div class="form-group">
+                        <label>Navigation </label>
+                        <input type="text" id="navigation_url" class="form-control" placeholder="Enter  Navgation">
+                    </div>
+                     <div class="form-group">
+                        <label>Banner Order</label>
+                        <input type="text" id="banner_order" class="form-control" placeholder="Enter Banner Order">
+                    </div>
+
+
+
+
+
+                </div>
+                <div class="modal-footer justify-content-between">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="reset" class="btn btn-danger reset" id="reset">Reset</button>
+                    <button type="button" id="submit" class="btn btn-primary">Save changes</button>
+                </div>
+            </form>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
 
 <?PHP $this->load->view("Admin/footer"); ?>
 
@@ -257,38 +301,6 @@
             reader.readAsDataURL(this.files[0]);
         }
     });
-
-
-    $('#screen').change(function(){ 
-                var id=$(this).val();
-                //console.log(id);
-                $.ajax({
-                    url : "<?php echo base_url('index.php/get_banner_order');?>",
-                    method : "POST",
-                    data : {screen: id},
-                    async : true,
-                    dataType : 'json',
-                    success: function(data){
-                        // console.log(data)
-                        var html = '<option value="">Select Banner Order</option>';
-                        var i,n,flag;
-                         for(n=1;n<=10;n++){
-                             flag=0;
-                             for(i=0;i<data.length;i++){
-                                 if(n==data[i].banner_order)
-                                 flag=1;
-                             }
-                             if(flag==0){
-                                html+='<option value='+n+'>'+n+'</option>';
-                             }
-                         }
-                        
-                        $('#banner_order').html(html);
- 
-                    }
-                });
-                return false;
-            });
 
     });
 </script>

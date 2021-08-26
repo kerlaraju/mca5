@@ -106,9 +106,6 @@ $route['edit_info/(:any)']="App/edit_user/$1";
 /* ------------------------------------------------------------------------------- */
 $route['banners']="App/banner_master";
 $route['add_banner']='App/add_banner';
-$route['get_banner_order']='App/get_banner_order';
-
-/*-----------Mandal Masters ---------------------------------*/
 
 
 

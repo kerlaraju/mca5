@@ -134,7 +134,44 @@
 </div>
 <!-- /.content-wrapper -->
 
+<div class="modal fade" id="modal-lg">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">District List</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form id="form" action="" method="post">
+                <div class="modal-body">
+                    <input type="hidden" id="flag" value="" />
+                    <div id="district_id_block" style="display:none" class="form-group">
+                        <label>District Id</label>
+                        <input type="text" id="district_id" class="form-control" placeholder="District ID" disabled>
+                    </div>
+                    <div class="form-group">
+                        <label>State Id</label>
+                        <input type="text" id="state_id" class="form-control" placeholder="Enter State Id">
+                    </div>
 
+                    <div class="form-group">
+                        <label> District</label>
+                        <input type="text" id="district" class="form-control" placeholder="Enter District ">
+                    </div>
+
+                </div>
+                <div class="modal-footer justify-content-between">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="reset" class="btn btn-danger reset" id="reset">Reset</button>
+                    <button type="button" id="submit" class="btn btn-primary">Save changes</button>
+                </div>
+            </form>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
 
 <?PHP $this->load->view("Admin/footer"); ?>
 
