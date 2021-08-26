@@ -19,7 +19,75 @@ class App extends CI_Controller{
        $this->load->view('Admin/dashboard',$dashboard_info);
       
     }
-    /* ------------------------------------Category-------------------------------------------------------------------------------- */
+/* ------------------------------------Alert Message-------------------------------------------------------------------------------- */
+public function alert_messages(){
+	
+	$data=$this->App_model->alert_messages();
+	$result['alert_messages']=$data;
+	$this->load->view("Admin/alert_messages",$result);
+}
+
+public function add_alert(){
+	if($_POST){
+		$data['message_title']=$this->input->post('message_title');
+		$data['message']=$this->input->post('message');
+		$data['from_date']=$this->input->post('from_date');
+		$data['to_date']=$this->input->post('to_date');
+	   
+		
+		$ins=$this->App_model->add_alert($data);
+		$this->session->set_flashdata('smsg',$ins['message']);
+		redirect(base_url('index.php/add_alert'));
+	}
+
+
+		$this->load->view('Admin/add_alert');
+}
+
+
+public function delete_alert($message_id)
+{
+	$sql = $this->db->query("delete from alert_messages where message_id=$message_id");
+	if($sql)
+	{
+		$this->session->set_flashdata('smsg','Record Deleted Successfully');
+			redirect(base_url('index.php/alert_messages'));
+	}
+}
+
+
+public function edit_alert($message_id)
+{
+	
+		  if($_POST)
+	{
+		$data['message_id'] = $this->input->post('message_id');
+		$data['message_title'] = $this->input->post('message_title');
+		$data['message'] = $this->input->post('message');
+		$data['from_date'] = $this->input->post('from_date');
+		$data['to_date'] = $this->input->post('to_date');
+	   
+		
+		$this->load->model('App_model');
+		$upd = $this->App_model->update_alert($data);
+		if($upd=='success')
+		{
+			$this->session->set_flashdata('smsg','Alert Message data updated');
+			redirect(base_url('index.php/alert_messages'));
+		}
+		else{
+			$this->session->set_flashdata('wmsg','Something Went wrong');
+			redirect(base_url('index.php/edit_alert/'.$data['message_id']));
+		}
+	}
+		$this->load->model('App_model');
+		$data['alert_messages']=$this->App_model->get_alert($message_id);
+	  
+		   $this->load->view('Admin/add_alert',$data);
+	
+}
+
+/* ------------------------------------Category-------------------------------------------------------------------------------- */
   
     public function category(){
 	
@@ -1091,70 +1159,6 @@ function edit_user($id){
 	    $data['banner_info']=$this->App_model->get_banner($banner_id);
 		$this->load->view('Admin/add_banner',$data);
 	
-    }
-/* -------------Alert------------------------------------------------------------------------------------------------------------ */
-public function alert_messages(){
-	
-	$data=$this->App_model->alert_messages();
-	$result['alert_messages']=$data;
-	$this->load->view("Admin/alert_messages",$result);
-    }
-
-    public function add_alert()
-    {   
-	if($_POST)
-	{
-		$data['cat_name']=$this->input->post('cat_name');
-		$data['cat_description']=$this->input->post('cat_description');
-			$data['cat_name']=$this->input->post('cat_name');
-		$data['cat_description']=$this->input->post('cat_description');
-	
-		
-		$active=$this->input->post('is_active');
-	
-		$data['is_active']=isset($active)?1:0;
-        
-        $config['upload_path'] = 'category_images';
-        $config['allowed_types'] = 'jpg|png|jpeg|JPG|JPEG|svg';
-        $config['max_size'] = '100000';
-        $config['remove_spaces'] = TRUE;
-        $fname=$_FILES["cat_image"]["name"];
-        $ext = strtolower(pathinfo($fname,PATHINFO_EXTENSION));
-        
-        $config['file_name']='img_'.uniqid().".".$ext;
-
-        $this->load->library('upload', $config);
-        $this->upload->initialize($config); 
-        
-        if ( ! $this->upload->do_upload('cat_image'))
-        {
-            $x['error'] = array('error' => $this->upload->display_errors());
-            print_r($config['upload_path']);
-            print_r($x['error']);exit;
-            
-        }
-         else
-        {
-            $data['cat_image']=$config['upload_path']."/".$config['file_name'];
-            $x=$this->App_model->add_cat($data);
-                       
-            
-              $this->session->set_flashdata('smsg',$x['message']);  
-                           
-           
-            
-            redirect(base_url('index.php/add_cat'));
-        }
-                
-                
-                
-                
-		
-			 
-	}
-
-
-		$this->load->view('Admin/add_cat');
     }
 
 /*

@@ -20,6 +20,61 @@ public function getdashboardinfo(){
     $data['orders_value']=$order_value->sum;
     return $data;
 }
+/* ------------------------------------Alert Message-------------------------------------------------------------------------------- */
+public function alert_messages(){
+        
+    $query=$this->db->get('alert_messages');
+    $data=$query->result();
+    return $data;
+}
+
+public function add_alert($data){
+    $check_alert=$this->db->get_where('alert_messages',array("message_title"=>$data['message_title']));
+  
+    
+    if($check_alert->num_rows()>0){
+        $data['message']="Alert Message ".$data['message_title']." Already Exists";
+     
+    }
+    else{
+        $insert=$this->db->insert('alert_messages',$data);
+        if($insert){
+            
+            $data['message']="Alert Message ".$data['message_title']." Added Successfully";
+           
+        }else{
+           
+            $data['message']='Something Went Wrong';
+        }
+    }
+    return $data;
+}
+
+public function update_alert($data)
+{
+   
+    $id = $data['message_id'];
+    unset($data['message_id']);
+    $upd = $this->db->where('message_id',$id);
+           $this->db->update('alert_messages',$data);
+    if($upd)
+    {
+        return "success";
+    }else{
+        return "error";
+    }
+}
+
+
+public function get_alert($message_id){
+
+    $array = array('message_id'=>$message_id);
+    $data = $this->db->get_where('alert_messages',$array)->row();
+    
+    return $data;
+}
+
+
 /* ------------------------------------Category-------------------------------------------------------------------------------- */
     public function category(){
         
@@ -474,60 +529,6 @@ public function approve($id){
     public function get_banner($banner_id){
 
        $data = $this->db->get_where('banner_master',array('banner_id'=>$banner_id))->row();
-        
-        return $data;
-
-
-    }
-/* -------------------Alert------------------------------------------------------------------------------------------------------- */
-public function alert_messages(){
-        
-        $query=$this->db->get('alert_messages');
-        $data=$query->result();
-        return $data;
-    }
-    public function add_alert($data){
-        $check_alert=$this->db->get_where('alert_messages',array("message_title"=>$data['message_title']));
-        
-        if($check_alert->num_rows()>0){
-            $data['code']='2';
-            $data['message']="alert_messages ".$data['message_title']." Already Exists";
-         
-        }
-        else{
-            $insert=$this->db->insert('alert_messages',$data);
-            if($insert){
-                $data['code']='1';
-                $data['message']="alert_messages ".$data['message_title']." Added Successfully";
-                
-                
-            }else{
-                $data['code']='1';
-                $data['message']='Something Went Wrong';
-            }
-        }
-        return $data;
-    }
-
-    public function update_alert($data)
-    {
-       
-        $id = $data['message_id'];
-        unset($data['message_id']);
-        $upd = $this->db->where('message_id',$id);
-               $this->db->update('alert_messages',$data);
-        if($upd)
-        {
-            return "success";
-        }else{
-            return "error";
-        }
-    }
-
-
-    public function get_alert($message_id){
-
-       $data = $this->db->get_where('alert_messages',array('message_id'=>$message_id))->row();
         
         return $data;
 

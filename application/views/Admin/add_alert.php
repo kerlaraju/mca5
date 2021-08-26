@@ -102,13 +102,13 @@
                             <div class="col-6">
                                 <div class="form-group">
                                     <label for="exampleInputEmail1">From Date</label>
-                                    <input type="text" value="<?PHP if(isset($alert_info)){ echo $alert_info->from_date;}else{ echo ""; } ?>" class="form-control" placeholder="Enter From Date" name="from_date" required>
+                                    <input type="date" value="<?PHP if(isset($alert_info)){ echo $alert_info->from_date;}else{ echo ""; } ?>" class="form-control" placeholder="Enter From Date" name="from_date" required>
                                 </div>
                             </div>
                             <div class="col-6">
                                 <div class="form-group">
                                     <label for="exampleInputEmail1">To Date</label>
-                                    <input type="text" value="<?PHP if(isset($alert_info)){ echo $alert_info->to_date;}else{ echo ""; } ?>" class="form-control" placeholder="Enter To date" name="to_date" required>
+                                    <input type="date" value="<?PHP if(isset($alert_info)){ echo $alert_info->to_date;}else{ echo ""; } ?>" class="form-control" placeholder="Enter To date" name="to_date" required>
                                 </div>
                             </div>
                         </div> 
@@ -174,11 +174,11 @@
                     </div>
                     <div class="form-group">
                         <label>From date </label>
-                        <input type="text" id="from_date" class="form-control" placeholder="Enter From Date">
+                        <input type="date" id="from_date" class="form-control" placeholder="Enter From Date">
                     </div>
                     <div class="form-group">
                         <label>To date</label>
-                        <input type="text" id="to_date" class="form-control" placeholder="Enter To Date">
+                        <input type="date" id="to_date" class="form-control" placeholder="Enter To Date">
                     </div>
 
 
