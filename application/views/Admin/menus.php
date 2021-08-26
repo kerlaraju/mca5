@@ -22,9 +22,15 @@
             </a>
             <ul class="nav nav-treeview">
                 <li class="nav-item">
+<<<<<<< HEAD
                     <a href="<?= base_url("index.php/alert_messages"); ?>" class="nav-link">
                         <i class="far fa-circle nav-icon"></i>
                         <p>Alert Message</p>
+=======
+                    <a href="<?= base_url("index.php/banners"); ?>" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Banners</p>
+>>>>>>> b9192fa7b65e4a9b76bbafc2e8277c3e706c07c4
                     </a>
                 </li>
             </ul>
@@ -88,6 +94,17 @@
                 </li>
 
             </ul>
+
+            <ul class="nav nav-treeview">
+                <li class="nav-item">
+                    <a href="<?= base_url("index.php/mandals"); ?>" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Mandals</p>
+                    </a>
+                </li>
+
+            </ul>
+
               <ul class="nav nav-treeview">
                 <li class="nav-item">
                     <a href="<?= base_url("index.php/vendor_rating"); ?>" class="nav-link">
@@ -97,24 +114,8 @@
                 </li>
 
             </ul>
-             <ul class="nav nav-treeview">
-                <li class="nav-item">
-                    <a href="<?= base_url("index.php/radius_master"); ?>" class="nav-link">
-                        <i class="far fa-circle nav-icon"></i>
-                        <p>Radius</p>
-                    </a>
-                </li>
-
-            </ul>
-            <ul class="nav nav-treeview">
-                <li class="nav-item">
-                    <a href="<?= base_url("index.php/banners"); ?>" class="nav-link">
-                        <i class="far fa-circle nav-icon"></i>
-                        <p>Banner</p>
-                    </a>
-                </li>
-
-            </ul>
+ 
+       
             
 
             
