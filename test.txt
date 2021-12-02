@@ -1,0 +1,3 @@
+name:supriya
+class:mca
+roll no:0004
